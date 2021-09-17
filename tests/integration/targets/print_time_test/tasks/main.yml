@@ -1,9 +1,27 @@
 ---
-- include_role:
-    name: print_time
-  register: result
+- name: Failure case
+  block:
+    - include_role:
+        name: print_time
+      vars:
+        print_time_fail: true
 
-- assert:
-    that:
-      - result is not changed
-      - result is succeeded
+  rescue:
+    - name: Failure case
+      assert:
+        that:
+          - ansible_failed_result is defined
+          - ansible_failed_result.msg == "Requested fail"
+          - time is not defined
+
+- name: Success case
+  block:
+    - include_role:
+        name: print_time
+      register: result
+
+    - name: Success case
+      assert:
+        that:
+          - result is succeeded
+          - time is defined

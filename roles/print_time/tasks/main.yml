@@ -1,4 +1,13 @@
 ---
+- name: Fail
+  fail:
+    msg: Requested fail
+  when: print_time_fail is defined and print_time_fail
+
+- name: Set time
+  set_fact:
+    time: "{{ansible_date_time.iso8601}}"
+
 - name: Print time
   debug:
-    var: ansible_date_time.iso8601
+    var: time
