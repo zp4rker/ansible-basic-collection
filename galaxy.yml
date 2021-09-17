@@ -7,6 +7,6 @@ readme: README.md
 authors:
 - Zaeem Parker <iam@zp4rker.com>
 
-description: A very basic collection simply designed to be used as a reference
+description: A very basic collection simply designed to be used as a reference.
 
 repository: https://github.com/zp4rker/ansible-basic-collection
