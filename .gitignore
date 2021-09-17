@@ -5,3 +5,4 @@ penv
 *.iml
 
 **/tests/output
+**/__pycache__
