@@ -1,0 +1,94 @@
+---
+- name: Failure case - invalid input
+  block:
+    - calculate:
+        x: 5
+        operation: plus
+        y: 5
+
+  rescue:
+    - name: Failure case - invalid input
+      assert:
+        that:
+          - ansible_failed_result is defined
+          - 'ansible_failed_result.msg == "value of operation must be one of: add, subtract, multiply, divide, got: plus"'
+
+
+- name: Failure case - invalid equation
+  block:
+    - calculate:
+        x: 5
+        operation: divide
+        y: 0
+
+  rescue:
+    - name: Failure case - invalid equation
+      assert:
+        that:
+          - ansible_failed_result is defined
+          - ansible_failed_result.equation == "5 ÷ 0"
+          - ansible_failed_result.msg == "You cannot divide by zero!"
+
+
+- name: Success case - addition
+  block:
+    - calculate:
+        x: 1
+        operation: add
+        y: 2
+      register: result
+
+    - name: Success case - addition
+      assert:
+        that:
+          - result is succeeded
+          - result.equation == "1 + 2"
+          - result.answer == 3
+
+
+- name: Success case - subtraction
+  block:
+    - calculate:
+        x: 4
+        operation: subtract
+        y: 3
+      register: result
+
+    - name: Success case - subtraction
+      assert:
+        that:
+          - result is succeeded
+          - result.equation == "4 − 3"
+          - result.answer == 1
+
+
+- name: Success case - multiplication
+  block:
+    - calculate:
+        x: 5
+        operation: multiply
+        y: 6
+      register: result
+
+    - name: Success case - addition
+      assert:
+        that:
+          - result is succeeded
+          - result.equation == "5 × 6"
+          - result.answer == 30
+
+
+- name: Success case - division
+  block:
+    - calculate:
+        x: 8
+        operation: divide
+        y: 10
+      register: result
+
+    - name: Success case - division
+      assert:
+        that:
+          - result is succeeded
+          - result.equation == "8 ÷ 10"
+          - result.answer == 0.8
